@@ -5,13 +5,14 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building..'
-                docker-compose build
-    			docker-compose up
+                sh 'dotnet build'
+    			sh 'dotnet restore'
             }
         }
         stage('Test') {
             steps {
                 echo 'Testing..'
+                sh 'dotnet test'
             }
         }
         stage('Deploy') {
