@@ -10,6 +10,9 @@ pipeline {
             }
         }
         stage('SonarQube analysis') {
+        	agent {
+                docker { image 'newtmitch/sonar-scanner:latest' }
+            }
     		steps {
             	sh "sonar-scanner"
         	}
