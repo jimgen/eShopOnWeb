@@ -5,24 +5,24 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building..'
-                sh 'dotnet build'
+                sh 'dotnet publish'
     			sh 'dotnet restore'
             }
         }
-        stage('SonarQube analysis') {
-        	agent {
-                docker { image 'newtmitch/sonar-scanner:latest' }
-            }
-    		steps {
-            	sh "docker run -ti -v $(pwd):/root/src --link sonarqube newtmitch/sonar-scanner sonar-scanner -Dsonar.host.url=http://sonarqube:9000 -Dsonar.projectKey=${env.JOB_NAME} -Dsonar.projectVersion=1 -Dsonar.projectBaseDir=/root -Dsonar.sources=./src"
-        	}
-  		}
         stage('Test') {
             steps {
                 echo 'Testing..'
-                sh 'dotnet test'
+                sh "pwd"
+            	sh "ls"
+                sh "dotnet test ./tests/UnitTests/UnitTests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=json"
             }
         }
+        stage('SonarQube analysis') {
+    		steps {
+            	sh "sonar-scanner -Dsonar.host.url=http://sonarqube:9000 -Dsonar.projectKey=eShopOnWeb -Dsonar.projectVersion=1 -Dsonar.projectBaseDir=. -Dsonar.sources=./src"	
+        	}
+  		}
+        
         stage('Deploy') {
             steps {
                 echo 'Deploying....'
