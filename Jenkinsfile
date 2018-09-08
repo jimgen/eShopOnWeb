@@ -19,7 +19,7 @@ pipeline {
         }
         stage('SonarQube analysis') {
     		steps {
-            	sh "sonar-scanner -Dsonar.host.url=http://sonarqube:9000 -Dsonar.projectKey=eShopOnWeb -Dsonar.projectVersion=1 -Dsonar.projectBaseDir=. -Dsonar.sources=./src"	
+            	sh "sonar-scanner -Dsonar.host.url=http://localhost:9000 -Dsonar.projectKey=eShopOnWeb -Dsonar.projectVersion=1 -Dsonar.projectBaseDir=. -Dsonar.sources=./src"	
         	}
   		}
         
