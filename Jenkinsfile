@@ -1,8 +1,10 @@
 pipeline {
-    agent any
-
+    agent {
+        docker { image 'microsoft/dotnet' }
+    }
     stages {
         stage('Build') {
+
             steps {
                 echo 'Building..'
                 sh 'dotnet publish'
